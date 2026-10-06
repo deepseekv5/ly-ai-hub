@@ -50,28 +50,28 @@
       <h2><span class="idx">02</span>算法</h2>
       <figure class="fig">
       <svg viewBox="0 0 860 240" role="img" aria-label="迁移决策流">
-        <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#34d399"/></marker></defs>
+        <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#2f9e6e"/></marker></defs>
         <g font-family="Menlo,monospace" font-size="12">
-          <rect x="20" y="20" width="200" height="44" rx="11" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
-          <text x="120" y="47" fill="#f5f5f7" text-anchor="middle">启动:旧目录存在?</text>
-          <line x1="120" y1="64" x2="120" y2="92" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
-          <text x="138" y="84" fill="#34d399">否 → 直接返回</text>
-          <rect x="20" y="96" width="200" height="64" rx="11" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
-          <text x="120" y="122" fill="#f5f5f7" text-anchor="middle">逐项搬运</text>
-          <text x="120" y="142" fill="#6e6e73" text-anchor="middle" font-size="10.5">旧存在 ∧ 新缺失 → rename</text>
-          <line x1="224" y1="128" x2="258" y2="128" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
-          <rect x="262" y="96" width="200" height="64" rx="11" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
-          <text x="362" y="122" fill="#f5f5f7" text-anchor="middle">全部搬空?</text>
-          <text x="362" y="142" fill="#6e6e73" text-anchor="middle" font-size="10.5">失败/残留 → 保留现场</text>
-          <line x1="466" y1="128" x2="500" y2="128" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
-          <rect x="504" y="96" width="180" height="64" rx="11" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
-          <text x="594" y="122" fill="#f5f5f7" text-anchor="middle">删除旧目录</text>
-          <text x="594" y="142" fill="#6e6e73" text-anchor="middle" font-size="10.5">rmdir(仅空目录)</text>
-          <line x1="688" y1="128" x2="722" y2="128" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
-          <circle cx="748" cy="128" r="24" fill="rgba(52,211,153,0.12)" stroke="#34d399"/>
-          <text x="748" y="133" fill="#34d399" text-anchor="middle" font-size="15">✓</text>
-          <text x="20" y="200" fill="#6e6e73" font-size="11">特殊项:remote.json(配对随机数)— 新处已存在则以新为准,旧的直接丢弃(服务端可再生成),否则 data/ 永远搬不空;</text>
-          <text x="20" y="220" fill="#6e6e73" font-size="11">skills 重名且内容不同的副本 — 一律保留并打日志,绝不静默删除用户技能。</text>
+          <rect x="20" y="20" width="200" height="44" rx="11" fill="rgba(255,255,255,0.55)" stroke="rgba(36,57,54,0.16)"/>
+          <text x="120" y="47" fill="#243936" text-anchor="middle">启动:旧目录存在?</text>
+          <line x1="120" y1="64" x2="120" y2="92" stroke="#2f9e6e" stroke-width="1.3" marker-end="url(#ar)"/>
+          <text x="138" y="84" fill="#2f9e6e">否 → 直接返回</text>
+          <rect x="20" y="96" width="200" height="64" rx="11" fill="rgba(39,79,71,0.1)" stroke="rgba(47,158,110,0.45)"/>
+          <text x="120" y="122" fill="#243936" text-anchor="middle">逐项搬运</text>
+          <text x="120" y="142" fill="#7d8f88" text-anchor="middle" font-size="10.5">旧存在 ∧ 新缺失 → rename</text>
+          <line x1="224" y1="128" x2="258" y2="128" stroke="#2f9e6e" stroke-width="1.3" marker-end="url(#ar)"/>
+          <rect x="262" y="96" width="200" height="64" rx="11" fill="rgba(255,255,255,0.55)" stroke="rgba(36,57,54,0.16)"/>
+          <text x="362" y="122" fill="#243936" text-anchor="middle">全部搬空?</text>
+          <text x="362" y="142" fill="#7d8f88" text-anchor="middle" font-size="10.5">失败/残留 → 保留现场</text>
+          <line x1="466" y1="128" x2="500" y2="128" stroke="#2f9e6e" stroke-width="1.3" marker-end="url(#ar)"/>
+          <rect x="504" y="96" width="180" height="64" rx="11" fill="rgba(39,79,71,0.1)" stroke="rgba(47,158,110,0.45)"/>
+          <text x="594" y="122" fill="#243936" text-anchor="middle">删除旧目录</text>
+          <text x="594" y="142" fill="#7d8f88" text-anchor="middle" font-size="10.5">rmdir(仅空目录)</text>
+          <line x1="688" y1="128" x2="722" y2="128" stroke="#2f9e6e" stroke-width="1.3" marker-end="url(#ar)"/>
+          <circle cx="748" cy="128" r="24" fill="rgba(47,158,110,0.12)" stroke="#2f9e6e"/>
+          <text x="748" y="133" fill="#2f9e6e" text-anchor="middle" font-size="15">✓</text>
+          <text x="20" y="200" fill="#7d8f88" font-size="11">特殊项:remote.json(配对随机数)— 新处已存在则以新为准,旧的直接丢弃(服务端可再生成),否则 data/ 永远搬不空;</text>
+          <text x="20" y="220" fill="#7d8f88" font-size="11">skills 重名且内容不同的副本 — 一律保留并打日志,绝不静默删除用户技能。</text>
         </g>
       </svg>
       <figcaption><b>图 1</b> · 迁移主流程。三条不变式:不覆盖新数据 · 幂等可重试 · 只删确认为空的目录。<span class="badge-meas">实测</span></figcaption>
@@ -115,7 +115,7 @@
 
     <section>
       <h2><span class="idx">06</span>数据来源</h2>
-      <p>迁移运行日志、目录比对与接口复测:2026-10-05 实机记录;代码:巨天agent 仓库 commit <code>23e4d88</code>(数据目录统一)。<code>~/.lyclaw</code> 目录总表另见 <a style="color:#34d399" href="https://github.com/deepseekv5/jutian-agent/blob/main/docs/guide/privacy.md" target="_blank" rel="noopener">docs/guide/privacy.md</a>。</p>
+      <p>迁移运行日志、目录比对与接口复测:2026-10-05 实机记录;代码:巨天agent 仓库 commit <code>23e4d88</code>(数据目录统一)。<code>~/.lyclaw</code> 目录总表另见 <a style="color:#2f9e6e" href="https://github.com/deepseekv5/jutian-agent/blob/main/docs/guide/privacy.md" target="_blank" rel="noopener">docs/guide/privacy.md</a>。</p>
     </section>
 
     <div class="pnav">

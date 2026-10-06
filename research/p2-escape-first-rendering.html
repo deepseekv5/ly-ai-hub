@@ -51,50 +51,50 @@
         <thead><tr><th>渲染面</th><th>管道</th><th>审计结论</th><th>处置</th></tr></thead>
         <tbody>
           <tr>
-            <td>代码模式 Markdown 预览<br><span style="color:#6e6e73;font-size:12px">MarkdownPreview.tsx</span></td>
+            <td>代码模式 Markdown 预览<br><span style="color:#7d8f88;font-size:12px">MarkdownPreview.tsx</span></td>
             <td class="mono">regex-md → dangerouslySetInnerHTML</td>
-            <td style="color:#f87171">裸 HTML 未转义,可执行注入</td>
+            <td style="color:#c0504d">裸 HTML 未转义,可执行注入</td>
             <td class="ok">已修复</td>
           </tr>
           <tr>
-            <td>手机远程单页<br><span style="color:#6e6e73;font-size:12px">public/remote.html</span></td>
+            <td>手机远程单页<br><span style="color:#7d8f88;font-size:12px">public/remote.html</span></td>
             <td class="mono">escape-&lt; → marked → innerHTML</td>
-            <td style="color:#fbbf24">脚本注入已死;javascript: 链接可点</td>
+            <td style="color:#b7791f">脚本注入已死;javascript: 链接可点</td>
             <td class="ok">已中和</td>
           </tr>
           <tr>
-            <td>知识库打印<br><span style="color:#6e6e73;font-size:12px">KnowledgeBase.tsx</span></td>
+            <td>知识库打印<br><span style="color:#7d8f88;font-size:12px">KnowledgeBase.tsx</span></td>
             <td class="mono">escape-first → regex-md → innerHTML</td>
-            <td style="color:#34d399">转义在先,安全</td>
+            <td style="color:#2f9e6e">转义在先,安全</td>
             <td class="ok">保持</td>
           </tr>
         </tbody>
       </table>
       <figure class="fig">
       <svg viewBox="0 0 860 210" role="img" aria-label="修复前后对照">
-        <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#34d399"/></marker></defs>
+        <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#2f9e6e"/></marker></defs>
         <g font-family="Menlo,monospace" font-size="12">
-          <text x="20" y="30" fill="#6e6e73">修复前</text>
-          <rect x="20" y="44" width="240" height="44" rx="10" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.4)"/>
-          <text x="140" y="71" fill="#f87171" text-anchor="middle">&lt;img src=x onerror=…&gt;</text>
-          <line x1="264" y1="66" x2="298" y2="66" stroke="rgba(239,68,68,0.8)" stroke-width="1.4" marker-end="url(#ar)"/>
-          <rect x="302" y="44" width="200" height="44" rx="10" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.4)"/>
-          <text x="402" y="71" fill="#f87171" text-anchor="middle">regex 增强(未转义)</text>
-          <line x1="506" y1="66" x2="540" y2="66" stroke="rgba(239,68,68,0.8)" stroke-width="1.4" marker-end="url(#ar)"/>
-          <rect x="544" y="44" width="130" height="44" rx="10" fill="rgba(239,68,68,0.14)" stroke="rgba(239,68,68,0.6)"/>
-          <text x="609" y="71" fill="#f87171" text-anchor="middle">innerHTML</text>
-          <line x1="678" y1="66" x2="712" y2="66" stroke="rgba(239,68,68,0.8)" stroke-width="1.4" marker-end="url(#ar)"/>
-          <text x="724" y="71" fill="#f87171">执行 ⚡</text>
-          <text x="20" y="130" fill="#6e6e73">修复后</text>
-          <rect x="20" y="144" width="240" height="44" rx="10" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.4)"/>
-          <text x="140" y="171" fill="#f87171" text-anchor="middle">&lt;img src=x onerror=…&gt;</text>
-          <line x1="264" y1="166" x2="298" y2="166" stroke="#34d399" stroke-width="1.4" marker-end="url(#ar)"/>
-          <rect x="302" y="144" width="240" height="44" rx="10" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
-          <text x="422" y="171" fill="#34d399" text-anchor="middle">① 全元字符转义 &amp; &lt; &gt; "</text>
-          <line x1="546" y1="166" x2="580" y2="166" stroke="#34d399" stroke-width="1.4" marker-end="url(#ar)"/>
-          <rect x="584" y="144" width="230" height="44" rx="10" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
-          <text x="699" y="171" fill="#34d399" text-anchor="middle">② scheme 中和 → href="#"</text>
-          <text x="836" y="171" fill="#34d399" text-anchor="end">✓ 文本</text>
+          <text x="20" y="30" fill="#7d8f88">修复前</text>
+          <rect x="20" y="44" width="240" height="44" rx="10" fill="rgba(200,78,74,0.08)" stroke="rgba(192,80,77,0.4)"/>
+          <text x="140" y="71" fill="#c0504d" text-anchor="middle">&lt;img src=x onerror=…&gt;</text>
+          <line x1="264" y1="66" x2="298" y2="66" stroke="rgba(192,80,77,0.6)" stroke-width="1.4" marker-end="url(#ar)"/>
+          <rect x="302" y="44" width="200" height="44" rx="10" fill="rgba(200,78,74,0.08)" stroke="rgba(192,80,77,0.4)"/>
+          <text x="402" y="71" fill="#c0504d" text-anchor="middle">regex 增强(未转义)</text>
+          <line x1="506" y1="66" x2="540" y2="66" stroke="rgba(192,80,77,0.6)" stroke-width="1.4" marker-end="url(#ar)"/>
+          <rect x="544" y="44" width="130" height="44" rx="10" fill="rgba(200,78,74,0.12)" stroke="rgba(192,80,77,0.55)"/>
+          <text x="609" y="71" fill="#c0504d" text-anchor="middle">innerHTML</text>
+          <line x1="678" y1="66" x2="712" y2="66" stroke="rgba(192,80,77,0.6)" stroke-width="1.4" marker-end="url(#ar)"/>
+          <text x="724" y="71" fill="#c0504d">执行 ⚡</text>
+          <text x="20" y="130" fill="#7d8f88">修复后</text>
+          <rect x="20" y="144" width="240" height="44" rx="10" fill="rgba(200,78,74,0.08)" stroke="rgba(192,80,77,0.4)"/>
+          <text x="140" y="171" fill="#c0504d" text-anchor="middle">&lt;img src=x onerror=…&gt;</text>
+          <line x1="264" y1="166" x2="298" y2="166" stroke="#2f9e6e" stroke-width="1.4" marker-end="url(#ar)"/>
+          <rect x="302" y="144" width="240" height="44" rx="10" fill="rgba(39,79,71,0.1)" stroke="rgba(47,158,110,0.45)"/>
+          <text x="422" y="171" fill="#2f9e6e" text-anchor="middle">① 全元字符转义 &amp; &lt; &gt; "</text>
+          <line x1="546" y1="166" x2="580" y2="166" stroke="#2f9e6e" stroke-width="1.4" marker-end="url(#ar)"/>
+          <rect x="584" y="144" width="230" height="44" rx="10" fill="rgba(39,79,71,0.1)" stroke="rgba(47,158,110,0.45)"/>
+          <text x="699" y="171" fill="#2f9e6e" text-anchor="middle">② scheme 中和 → href="#"</text>
+          <text x="836" y="171" fill="#2f9e6e" text-anchor="end">✓ 文本</text>
         </g>
       </svg>
       <figcaption><b>图 1</b> · 同一载荷在修复前后的命运。<span class="badge-meas">代码级验证</span></figcaption>

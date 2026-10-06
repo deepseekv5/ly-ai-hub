@@ -53,28 +53,28 @@
       <svg viewBox="0 0 860 150" role="img" aria-label="网关检查链">
         <defs>
           <marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-            <path d="M0,0 L8,4 L0,8 z" fill="#34d399"/>
+            <path d="M0,0 L8,4 L0,8 z" fill="#2f9e6e"/>
           </marker>
         </defs>
         <g font-family="Menlo,monospace" font-size="12.5">
-          <rect x="8"   y="30" width="150" height="52" rx="12" fill="rgba(16,163,127,0.09)" stroke="rgba(52,211,153,0.45)"/>
-          <text x="83"  y="52" fill="#f5f5f7" text-anchor="middle">OPTIONS 预检</text>
-          <text x="83"  y="70" fill="#6e6e73" text-anchor="middle">不可信 Origin → 403</text>
-          <line x1="162" y1="56" x2="196" y2="56" stroke="#34d399" stroke-width="1.4" marker-end="url(#ar)"/>
-          <rect x="200" y="30" width="150" height="52" rx="12" fill="rgba(16,163,127,0.09)" stroke="rgba(52,211,153,0.45)"/>
-          <text x="275" y="52" fill="#f5f5f7" text-anchor="middle">Origin 门卫</text>
-          <text x="275" y="70" fill="#6e6e73" text-anchor="middle">跨站 → 403</text>
-          <line x1="354" y1="56" x2="388" y2="56" stroke="#34d399" stroke-width="1.4" marker-end="url(#ar)"/>
-          <rect x="392" y="30" width="150" height="52" rx="12" fill="rgba(16,163,127,0.09)" stroke="rgba(52,211,153,0.45)"/>
-          <text x="467" y="52" fill="#f5f5f7" text-anchor="middle">Host 校验</text>
-          <text x="467" y="70" fill="#6e6e73" text-anchor="middle">rebinding → 421</text>
-          <line x1="546" y1="56" x2="580" y2="56" stroke="#34d399" stroke-width="1.4" marker-end="url(#ar)"/>
-          <rect x="584" y="30" width="150" height="52" rx="12" fill="rgba(16,163,127,0.09)" stroke="rgba(52,211,153,0.45)"/>
-          <text x="659" y="52" fill="#f5f5f7" text-anchor="middle">配对码门(非本机)</text>
-          <text x="659" y="70" fill="#6e6e73" text-anchor="middle">无码 → 401 / 404</text>
-          <line x1="738" y1="56" x2="772" y2="56" stroke="#34d399" stroke-width="1.4" marker-end="url(#ar)"/>
-          <circle cx="806" cy="56" r="24" fill="rgba(52,211,153,0.12)" stroke="#34d399"/>
-          <text x="806" y="61" fill="#34d399" text-anchor="middle" font-size="15">✓</text>
+          <rect x="8"   y="30" width="150" height="52" rx="12" fill="rgba(39,79,71,0.09)" stroke="rgba(47,158,110,0.45)"/>
+          <text x="83"  y="52" fill="#243936" text-anchor="middle">OPTIONS 预检</text>
+          <text x="83"  y="70" fill="#7d8f88" text-anchor="middle">不可信 Origin → 403</text>
+          <line x1="162" y1="56" x2="196" y2="56" stroke="#2f9e6e" stroke-width="1.4" marker-end="url(#ar)"/>
+          <rect x="200" y="30" width="150" height="52" rx="12" fill="rgba(39,79,71,0.09)" stroke="rgba(47,158,110,0.45)"/>
+          <text x="275" y="52" fill="#243936" text-anchor="middle">Origin 门卫</text>
+          <text x="275" y="70" fill="#7d8f88" text-anchor="middle">跨站 → 403</text>
+          <line x1="354" y1="56" x2="388" y2="56" stroke="#2f9e6e" stroke-width="1.4" marker-end="url(#ar)"/>
+          <rect x="392" y="30" width="150" height="52" rx="12" fill="rgba(39,79,71,0.09)" stroke="rgba(47,158,110,0.45)"/>
+          <text x="467" y="52" fill="#243936" text-anchor="middle">Host 校验</text>
+          <text x="467" y="70" fill="#7d8f88" text-anchor="middle">rebinding → 421</text>
+          <line x1="546" y1="56" x2="580" y2="56" stroke="#2f9e6e" stroke-width="1.4" marker-end="url(#ar)"/>
+          <rect x="584" y="30" width="150" height="52" rx="12" fill="rgba(39,79,71,0.09)" stroke="rgba(47,158,110,0.45)"/>
+          <text x="659" y="52" fill="#243936" text-anchor="middle">配对码门(非本机)</text>
+          <text x="659" y="70" fill="#7d8f88" text-anchor="middle">无码 → 401 / 404</text>
+          <line x1="738" y1="56" x2="772" y2="56" stroke="#2f9e6e" stroke-width="1.4" marker-end="url(#ar)"/>
+          <circle cx="806" cy="56" r="24" fill="rgba(47,158,110,0.12)" stroke="#2f9e6e"/>
+          <text x="806" y="61" fill="#2f9e6e" text-anchor="middle" font-size="15">✓</text>
         </g>
       </svg>
       <figcaption><b>图 1</b> · 请求门卫链。前三道对所有请求生效;第四道仅对来源非本机回环的请求生效。</figcaption>
@@ -119,22 +119,22 @@
       </div>
       <figure class="fig">
       <svg viewBox="0 0 860 190" role="img" aria-label="密钥掩码管道">
-        <defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#34d399"/></marker></defs>
+        <defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#2f9e6e"/></marker></defs>
         <g font-family="Menlo,monospace" font-size="12">
-          <rect x="10" y="40" width="128" height="46" rx="11" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
-          <text x="74" y="68" fill="#f5f5f7" text-anchor="middle">SQLite 密钥</text>
-          <line x1="142" y1="63" x2="176" y2="63" stroke="#34d399" stroke-width="1.4" marker-end="url(#ar2)"/>
-          <rect x="180" y="40" width="150" height="46" rx="11" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
-          <text x="255" y="68" fill="#f5f5f7" text-anchor="middle">maskSecrets()</text>
-          <line x1="334" y1="63" x2="368" y2="63" stroke="#34d399" stroke-width="1.4" marker-end="url(#ar2)"/>
-          <rect x="372" y="40" width="200" height="46" rx="11" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
-          <text x="472" y="68" fill="#a1a1a6" text-anchor="middle">sk-6****9Ylc</text>
-          <line x1="472" y1="90" x2="472" y2="118" stroke="rgba(239,68,68,0.7)" stroke-width="1.4" marker-end="url(#ar2)"/>
-          <rect x="366" y="122" width="212" height="40" rx="10" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.35)"/>
-          <text x="472" y="147" fill="#a1a1a6" text-anchor="middle">POST 含 **** → skipped</text>
-          <text x="255" y="145" fill="#6e6e73" text-anchor="middle" font-size="11">GET 回包唯一出口</text>
-          <text x="806" y="68" fill="#6e6e73" text-anchor="end" font-size="11">备份导出:门卫后唯一明文口</text>
-          <text x="806" y="86" fill="#6e6e73" text-anchor="end" font-size="11">(否则备份无法还原)</text>
+          <rect x="10" y="40" width="128" height="46" rx="11" fill="rgba(255,255,255,0.55)" stroke="rgba(36,57,54,0.16)"/>
+          <text x="74" y="68" fill="#243936" text-anchor="middle">SQLite 密钥</text>
+          <line x1="142" y1="63" x2="176" y2="63" stroke="#2f9e6e" stroke-width="1.4" marker-end="url(#ar2)"/>
+          <rect x="180" y="40" width="150" height="46" rx="11" fill="rgba(39,79,71,0.1)" stroke="rgba(47,158,110,0.45)"/>
+          <text x="255" y="68" fill="#243936" text-anchor="middle">maskSecrets()</text>
+          <line x1="334" y1="63" x2="368" y2="63" stroke="#2f9e6e" stroke-width="1.4" marker-end="url(#ar2)"/>
+          <rect x="372" y="40" width="200" height="46" rx="11" fill="rgba(255,255,255,0.55)" stroke="rgba(36,57,54,0.16)"/>
+          <text x="472" y="68" fill="#556b68" text-anchor="middle">sk-6****9Ylc</text>
+          <line x1="472" y1="90" x2="472" y2="118" stroke="rgba(192,80,77,0.6)" stroke-width="1.4" marker-end="url(#ar2)"/>
+          <rect x="366" y="122" width="212" height="40" rx="10" fill="rgba(200,78,74,0.08)" stroke="rgba(192,80,77,0.35)"/>
+          <text x="472" y="147" fill="#556b68" text-anchor="middle">POST 含 **** → skipped</text>
+          <text x="255" y="145" fill="#7d8f88" text-anchor="middle" font-size="11">GET 回包唯一出口</text>
+          <text x="806" y="68" fill="#7d8f88" text-anchor="end" font-size="11">备份导出:门卫后唯一明文口</text>
+          <text x="806" y="86" fill="#7d8f88" text-anchor="end" font-size="11">(否则备份无法还原)</text>
         </g>
       </svg>
       <figcaption><b>图 2</b> · 密钥的单向掩码管道:出去是掩码,回来的掩码进不了库。<span class="badge-meas">实测</span></figcaption>
@@ -153,7 +153,7 @@
 
     <section>
       <h2><span class="idx">06</span>数据来源</h2>
-      <p>攻击矩阵:2026-10-05/06 实机 curl 记录(巨天agent 开发仓库)。历史扫描:<code>git grep &lt;pattern&gt; $(git rev-list --all)</code> 全提交树匹配,零命中。审计计数:npm audit 官方源 JSON 输出,修复前 37(critical 1)→ 修复后 22(critical 0)。代码:<a style="color:#34d399" href="https://github.com/deepseekv5/jutian-agent/blob/main/src/server/serve.ts" target="_blank" rel="noopener">src/server/serve.ts</a>。</p>
+      <p>攻击矩阵:2026-10-05/06 实机 curl 记录(巨天agent 开发仓库)。历史扫描:<code>git grep &lt;pattern&gt; $(git rev-list --all)</code> 全提交树匹配,零命中。审计计数:npm audit 官方源 JSON 输出,修复前 37(critical 1)→ 修复后 22(critical 0)。代码:<a style="color:#2f9e6e" href="https://github.com/deepseekv5/jutian-agent/blob/main/src/server/serve.ts" target="_blank" rel="noopener">src/server/serve.ts</a>。</p>
     </section>
 
     <div class="pnav">
