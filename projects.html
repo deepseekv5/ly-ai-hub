@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>项目 — LY AI HUB</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html"><span class="dot"></span>LY AI HUB</a>
+    <div class="links">
+      <a href="index.html">首页</a>
+      <a href="projects.html" class="on">项目</a>
+      <a href="research.html">研究</a>
+    </div>
+    <a class="gh" href="https://github.com/deepseekv5" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</nav>
+
+<header class="hero" style="padding:110px 0 80px">
+  <div class="wrap">
+    <div class="kicker">Projects</div>
+    <h1 style="font-size:clamp(40px,6vw,68px)">我们造的东西</h1>
+    <p class="sub">全部产出开源(MIT),全部数字可溯源。</p>
+  </div>
+</header>
+
+<section class="sec" style="padding-top:20px">
+  <div class="wrap">
+    <div class="grid c2">
+
+      <div class="card reveal" style="grid-column:1/-1">
+        <span class="tag">Flagship · v7.0.0 · MIT</span>
+        <h3 style="font-size:26px">巨天agent — 桌面 AI 工作台</h3>
+        <p>对话、代码、集群、Computer Use 四位一体。38 个内置工具直连真实终端与文件系统;子代理并行池(并发 3)让 AI 派出 AI;Computer Use 以「截屏 → 决策 → 执行 → 验证」循环操作真实桌面;手机远程扫码配对,进度实时同步;LY HARNESS 插件中心让 38 个工具逐个开关、MCP 服务即插即用。数据全部落在本地 <code style="font-family:var(--mono);font-size:13px">~/.lyclaw/</code>,零上云、零遥测。</p>
+        <div class="meta">
+          <span>38 tools</span><span>并发 3 子代理池</span><span>MCP</span><span>11 篇文档</span><span>CI 绿</span><span>14 commits</span>
+        </div>
+        <a class="go" href="https://github.com/deepseekv5/jutian-agent" target="_blank" rel="noopener">GitHub 仓库 →</a>
+        &nbsp;&nbsp;<a class="go" href="https://github.com/deepseekv5/jutian-agent/blob/main/README.md" target="_blank" rel="noopener">完整文档 →</a>
+      </div>
+
+      <div class="card reveal">
+        <span class="tag">Media Engine</span>
+        <h3>品牌影片渲染机</h3>
+        <p>不用剪辑软件。影片由 Python 引擎逐帧渲染:128 BPM 音乐网格对齐节拍,8 个场景,系统 PingFang 渲染中文,2× 超采样,NVENC 硬编码失败自动回退 libx264。交付 <b>1920×1080 / 23.03s / 544 KB</b> 的《巨天agent 宣传片 v7》。</p>
+        <div class="meta"><span>8 scenes</span><span>128 BPM</span><span>ss=2</span><span>1080p30</span></div>
+        <a class="go" href="research/p5-bpm-film-engine.html">研究论文 →</a>
+      </div>
+
+      <div class="card reveal">
+        <span class="tag">CLI</span>
+        <h3>jtcode — 终端即入口</h3>
+        <p>一行命令唤起助手,不切窗口。终端里、脚本里、CI 里都能用;版本号由安装器从 package.json 单一来源注入,与应用始终保持一致。</p>
+        <div class="meta"><span>src/shared/jtcode-cli.mjs</span><span>单文件分发</span></div>
+        <a class="go" href="https://github.com/deepseekv5/jutian-agent/blob/main/src/shared/jtcode-cli.mjs" target="_blank" rel="noopener">源码 →</a>
+      </div>
+
+      <div class="card reveal">
+        <span class="tag">Security Subsystem</span>
+        <h3>同宿主零信任网关</h3>
+        <p>巨天agent 的安全底座,也是一篇论文:同宿主 Origin 判定、DNS-rebinding 421、密钥掩码与回写保护、备份导出策略。六类攻击实测全部拦截,全部历史提交零密钥泄漏。</p>
+        <div class="meta"><span>403 / 421 / 401</span><span>掩码 sk-6****9Ylc</span><span>0 leaks</span></div>
+        <a class="go" href="research/p1-zero-trust-gateway.html">研究论文 →</a>
+      </div>
+
+      <div class="card reveal">
+        <span class="tag">Docs System</span>
+        <h3>文档与官网体系</h3>
+        <p>11 篇指南(用户 8 篇 + 开发者 3 篇)+ 4 篇工程文件,全锚点一键跳转;产品官网与工程博客同源发布于 GitHub Pages。</p>
+        <div class="meta"><span>docs/guide × 8</span><span>docs/dev × 3</span></div>
+        <a class="go" href="https://github.com/deepseekv5/jutian-agent/tree/main/docs" target="_blank" rel="noopener">文档目录 →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="col">
+      <b>LY AI HUB</b>
+      <div class="fine">本地优先 · 数据归你 · MIT。</div>
+    </div>
+    <div class="col">
+      <b>导航</b>
+      <a href="index.html">首页</a>
+      <a href="projects.html">项目</a>
+      <a href="research.html">研究</a>
+    </div>
+    <div class="col">
+      <b>链接</b>
+      <a href="https://github.com/deepseekv5/jutian-agent" target="_blank" rel="noopener">巨天agent · GitHub ↗</a>
+      <a href="https://github.com/deepseekv5" target="_blank" rel="noopener">GitHub 组织 ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P4 · 单目录本地数据架构与无损迁移 — LY AI HUB</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="../index.html"><span class="dot"></span>LY AI HUB</a>
+    <div class="links">
+      <a href="../index.html">首页</a>
+      <a href="../projects.html">项目</a>
+      <a href="../research.html" class="on">研究</a>
+    </div>
+    <a class="gh" href="https://github.com/deepseekv5" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</nav>
+
+<header class="paper-hero">
+  <div class="wrap">
+    <span class="no">PAPER · 04 · DATA</span>
+    <h1>单目录本地数据架构与无损迁移</h1>
+    <div class="en">Single-Directory Local-First Data &amp; Lossless Migration</div>
+    <div class="meta">
+      <span class="chip g">2026-10</span>
+      <span class="chip">LY AI HUB</span>
+      <span class="chip">巨天agent v7.0.0</span>
+      <span class="chip">33 项实测迁移 · 0 丢失</span>
+    </div>
+    <div class="abstract">
+      <b>摘要</b> — 「本地优先」意味着应用的数据架构会像代码一样经历版本演化,而用户数据没有分支可以回退。巨天agent 的运行数据曾分裂在 <code>~/.laoyou-agent</code> 与 <code>~/.lyclaw</code> 两处;v7.0.0 将其统一到 <code>~/.lyclaw</code> 单目录,并内建启动时迁移:旧有新无才搬、搬空才删、失败保留现场下次重试。本文给出迁移算法、冲突处置策略与一次真实迁移的完整记录:33 项成功搬移、12 项重名冲突副本全部保留、配对码跨版本保持不变、零数据丢失。
+    </div>
+  </div>
+</header>
+
+<article class="paper">
+  <div class="wrap">
+
+    <section>
+      <h2><span class="idx">01</span>问题:演化中的数据目录</h2>
+      <p>产品更名与技术演进(设置从 JSON 迁向 SQLite、技能库共享化)使运行数据分裂在两个用户目录:SQLite 与技能库在 <code>~/.lyclaw</code>,配对码、截图、记忆、定时任务仍在 <code>~/.laoyou-agent</code>。旧目录名带着废弃的项目代号,同一个后端读写两处——功能上自洽,但「彻底删除 = 删一个目录」的本地优先承诺已经无法兑现。</p>
+      <p>合并的约束条件:迁移必须<strong>内建</strong>于应用启动路径(用户不执行任何命令)、必须<strong>幂等</strong>(任何一步失败,下次启动接着来)、必须<strong>不覆盖</strong>新目录已有数据、必须保证<strong>手机配对码跨版本连续</strong>(已配对的设备不能失效)。</p>
+    </section>
+
+    <section>
+      <h2><span class="idx">02</span>算法</h2>
+      <figure class="fig">
+      <svg viewBox="0 0 860 240" role="img" aria-label="迁移决策流">
+        <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#34d399"/></marker></defs>
+        <g font-family="Menlo,monospace" font-size="12">
+          <rect x="20" y="20" width="200" height="44" rx="11" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
+          <text x="120" y="47" fill="#f5f5f7" text-anchor="middle">启动:旧目录存在?</text>
+          <line x1="120" y1="64" x2="120" y2="92" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <text x="138" y="84" fill="#34d399">否 → 直接返回</text>
+          <rect x="20" y="96" width="200" height="64" rx="11" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
+          <text x="120" y="122" fill="#f5f5f7" text-anchor="middle">逐项搬运</text>
+          <text x="120" y="142" fill="#6e6e73" text-anchor="middle" font-size="10.5">旧存在 ∧ 新缺失 → rename</text>
+          <line x1="224" y1="128" x2="258" y2="128" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <rect x="262" y="96" width="200" height="64" rx="11" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
+          <text x="362" y="122" fill="#f5f5f7" text-anchor="middle">全部搬空?</text>
+          <text x="362" y="142" fill="#6e6e73" text-anchor="middle" font-size="10.5">失败/残留 → 保留现场</text>
+          <line x1="466" y1="128" x2="500" y2="128" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <rect x="504" y="96" width="180" height="64" rx="11" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
+          <text x="594" y="122" fill="#f5f5f7" text-anchor="middle">删除旧目录</text>
+          <text x="594" y="142" fill="#6e6e73" text-anchor="middle" font-size="10.5">rmdir(仅空目录)</text>
+          <line x1="688" y1="128" x2="722" y2="128" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <circle cx="748" cy="128" r="24" fill="rgba(52,211,153,0.12)" stroke="#34d399"/>
+          <text x="748" y="133" fill="#34d399" text-anchor="middle" font-size="15">✓</text>
+          <text x="20" y="200" fill="#6e6e73" font-size="11">特殊项:remote.json(配对随机数)— 新处已存在则以新为准,旧的直接丢弃(服务端可再生成),否则 data/ 永远搬不空;</text>
+          <text x="20" y="220" fill="#6e6e73" font-size="11">skills 重名且内容不同的副本 — 一律保留并打日志,绝不静默删除用户技能。</text>
+        </g>
+      </svg>
+      <figcaption><b>图 1</b> · 迁移主流程。三条不变式:不覆盖新数据 · 幂等可重试 · 只删确认为空的目录。<span class="badge-meas">实测</span></figcaption>
+      </figure>
+      <p>两条<strong>反直觉的保守决策</strong>值得单独说明:其一,配对码虽是服务端自生成随机数,但当新旧并存时,保留新目录那份并丢弃旧份——否则旧目录永远差一个文件、永远删不掉,且 token 会在两次构建间来回跳变。其二,skills 里重名但内容不同的旧副本<strong>一个都不动</strong>:我们无法机械判断哪份是用户改过的,宁可留下一条日志提示人工处置。</p>
+    </section>
+
+    <section>
+      <h2><span class="idx">03</span>实现</h2>
+      <p>迁移以 IIFE 形式置于 <code>src/server/serve.ts</code> 模块加载的最前端——严格先于 MCP 初始化与 SQLite 打开,保证任何组件首次读到的都是新路径。全部路径经 <code>LYCLAW_HOME / DATA_DIR</code> 两个常量收口(此前 18 处散落的硬编码路径全部替换),并顺带消除一处迁移替换引入的 <code>const DATA_DIR = DATA_DIR</code> 暂态死区崩溃。</p>
+      <div class="pmetrics">
+        <div class="pm"><div class="v"><em>33</em></div><div class="k">一次启动搬移项数</div></div>
+        <div class="pm"><div class="v"><em>0</em></div><div class="k">数据丢失</div></div>
+        <div class="pm"><div class="v">12</div><div class="k">重名技能副本保留</div></div>
+        <div class="pm"><div class="v"><em>100%</em></div><div class="k">配对码跨版本连续</div></div>
+      </div>
+      <p class="file">实现 <b>src/server/serve.ts</b>(migrate IIFE)· <b>src/shared/mcp.cjs</b> 默认路径同步 · 18 处路径收口</p>
+    </section>
+
+    <section>
+      <h2><span class="idx">04</span>实测记录</h2>
+      <p>以下为 2026-10-05 真实迁移运行的逐项核对结果:</p>
+      <table>
+        <thead><tr><th>核对项</th><th>方法</th><th>结果</th></tr></thead>
+        <tbody>
+          <tr><td>搬移完整性</td><td class="mono">迁移日志 moved=33 failed=0;新旧目录逐文件比对</td><td class="ok">33 项全部就位,memories/sessions/mcp.json/23 个 messages_*.json/screenshots 等无一遗漏</td></tr>
+          <tr><td>配对码连续性</td><td class="mono">迁移前后 token 前 8 位比对</td><td class="ok">2abae678… 保持不变,已配对设备无感</td></tr>
+          <tr><td>冲突副本</td><td class="mono">diff -rq 旧 skills vs 新 skills</td><td class="ok">12 项内容有差异 → 全部保留于旧目录并打日志(regex-tester 等独有项已先行搬入)</td></tr>
+          <tr><td>迁移后接口</td><td class="mono">health / GET / /remote.html?t=… / 掩码复测</td><td class="ok">200 / 200 / 200 / 掩码完好</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2><span class="idx">05</span>局限</h2>
+      <ul>
+        <li>重名冲突副本依赖人工判断,自动化(如按 mtime/内容哈希建议保留方)是后续方向;当前选择「绝不静默删」。</li>
+        <li>迁移假定同卷(用户主目录内),<code>renameSync</code> 跨卷场景会落入失败分支重试——本产品数据目录恒在同卷,不构成实际路径。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><span class="idx">06</span>数据来源</h2>
+      <p>迁移运行日志、目录比对与接口复测:2026-10-05 实机记录;代码:巨天agent 仓库 commit <code>23e4d88</code>(数据目录统一)。<code>~/.lyclaw</code> 目录总表另见 <a style="color:#34d399" href="https://github.com/deepseekv5/jutian-agent/blob/main/docs/guide/privacy.md" target="_blank" rel="noopener">docs/guide/privacy.md</a>。</p>
+    </section>
+
+    <div class="pnav">
+      <a href="p3-subagent-pool.html" style="text-align:left">← 上一篇:P3 子代理调度池</a>
+      <a class="back" href="../research.html">全部论文</a>
+      <a href="p5-bpm-film-engine.html" style="text-align:right">下一篇:P5 音乐网格影片引擎 →</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="col"><b>LY AI HUB</b><div class="fine">本地优先 · 数据归你 · MIT。</div></div>
+    <div class="col"><b>导航</b><a href="../index.html">首页</a><a href="../projects.html">项目</a><a href="../research.html">研究</a></div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P5 · 128 BPM 网格上的程序化品牌影片渲染 — LY AI HUB</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="../index.html"><span class="dot"></span>LY AI HUB</a>
+    <div class="links">
+      <a href="../index.html">首页</a>
+      <a href="../projects.html">项目</a>
+      <a href="../research.html" class="on">研究</a>
+    </div>
+    <a class="gh" href="https://github.com/deepseekv5" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</nav>
+
+<header class="paper-hero">
+  <div class="wrap">
+    <span class="no">PAPER · 05 · MEDIA</span>
+    <h1>128 BPM 网格上的程序化品牌影片渲染</h1>
+    <div class="en">Programmatic Brand Film Rendering on a Musical Grid</div>
+    <div class="meta">
+      <span class="chip g">2026-10</span>
+      <span class="chip">LY AI HUB</span>
+      <span class="chip">《巨天agent 宣传片 v7》已交付</span>
+      <span class="chip">1920×1080 · 23.03s · 544 KB</span>
+    </div>
+    <div class="abstract">
+      <b>摘要</b> — 品牌影片通常是非均匀的手工产物:改一个标尺、换一句文案,都要重新对轨、重新导出。我们为巨天agent 构建了一套程序化影片引擎:全片结构对齐 128 BPM 音乐网格(每小节一个场景),中文排版走系统字体管道,2× 超采样抗锯齿,编码优先硬件、失败自动回退。影片因此成为<strong>可版本管理的代码产物</strong>——改文案即改代码,渲染即发布。交付物《巨天agent 宣传片 v7》为 1920×1080 / 23.03 秒 / 544 KB,已随产品发布。
+    </div>
+  </div>
+</header>
+
+<article class="paper">
+  <div class="wrap">
+
+    <section>
+      <h2><span class="idx">01</span>问题:品牌影片的非均匀性</h2>
+      <p>手剪宣传片的三个痛点:节拍对齐靠耳朵(每一帧的时间没有结构依据)、中文排版是二等公民(设计工具的字体渲染与成片管线脱节)、改稿成本高(任何文案改动都意味着人工重剪)。程序化引擎的目标是把影片变成<strong>确定性函数</strong>:同一份代码,永远渲染出同一部片子。</p>
+    </section>
+
+    <section>
+      <h2><span class="idx">02</span>设计:音乐网格即时间轴</h2>
+      <p>引擎以 128 BPM 为全局节拍器:一拍 = 0.46875 秒,一小节 = 4 拍,每个场景恰好占据一小节。场景内所有动画时长以「拍」为分数表达,节拍重音触发光脉冲与转场白闪。这让画面剪辑与配乐天然锁相——音乐不是事后配上去的,而是时间轴本身。</p>
+      <figure class="fig">
+      <svg viewBox="0 0 860 168" role="img" aria-label="八场景时间轴">
+        <g font-family="Menlo,monospace" font-size="11">
+          <rect x="20" y="46" width="102.5" height="56" rx="10" fill="rgba(16,163,127,0.1)"  stroke="rgba(52,211,153,0.5)"/>
+          <rect x="126.5" y="46" width="102.5" height="56" rx="10" fill="rgba(16,163,127,0.06)" stroke="rgba(52,211,153,0.35)"/>
+          <rect x="233" y="46" width="102.5" height="56" rx="10" fill="rgba(16,163,127,0.1)"  stroke="rgba(52,211,153,0.5)"/>
+          <rect x="339.5" y="46" width="102.5" height="56" rx="10" fill="rgba(16,163,127,0.06)" stroke="rgba(52,211,153,0.35)"/>
+          <rect x="446" y="46" width="102.5" height="56" rx="10" fill="rgba(16,163,127,0.1)"  stroke="rgba(52,211,153,0.5)"/>
+          <rect x="552.5" y="46" width="102.5" height="56" rx="10" fill="rgba(16,163,127,0.06)" stroke="rgba(52,211,153,0.35)"/>
+          <rect x="659" y="46" width="102.5" height="56" rx="10" fill="rgba(16,163,127,0.1)"  stroke="rgba(52,211,153,0.5)"/>
+          <rect x="765.5" y="46" width="74.5" height="56" rx="10" fill="rgba(16,163,127,0.06)" stroke="rgba(52,211,153,0.35)"/>
+          <text x="71"   y="70" fill="#f5f5f7" text-anchor="middle">01 开场</text>
+          <text x="177"  y="70" fill="#f5f5f7" text-anchor="middle">02 动效字</text>
+          <text x="284"  y="70" fill="#f5f5f7" text-anchor="middle">03 工具</text>
+          <text x="390"  y="70" fill="#f5f5f7" text-anchor="middle">04 集群</text>
+          <text x="497"  y="70" fill="#f5f5f7" text-anchor="middle">05 CU</text>
+          <text x="604"  y="70" fill="#f5f5f7" text-anchor="middle">06 远程</text>
+          <text x="710"  y="70" fill="#f5f5f7" text-anchor="middle">07 数据</text>
+          <text x="802"  y="70" fill="#f5f5f7" text-anchor="middle">08 落版</text>
+          <text x="71"   y="90" fill="#6e6e73" text-anchor="middle">品牌标题</text>
+          <text x="177"  y="90" fill="#6e6e73" text-anchor="middle">四词一拍</text>
+          <text x="284"  y="90" fill="#6e6e73" text-anchor="middle">38 一览</text>
+          <text x="390"  y="90" fill="#6e6e73" text-anchor="middle">协作流水线</text>
+          <text x="497"  y="90" fill="#6e6e73" text-anchor="middle">操作循环</text>
+          <text x="604"  y="90" fill="#6e6e73" text-anchor="middle">扫码配对</text>
+          <text x="710"  y="90" fill="#6e6e73" text-anchor="middle">滚动数字</text>
+          <text x="802"  y="90" fill="#6e6e73" text-anchor="middle">品牌收束</text>
+          <line x1="20" y1="132" x2="840" y2="132" stroke="rgba(255,255,255,0.14)"/>
+          <g fill="#34d399">
+            <circle cx="20" cy="132" r="3.5"/><circle cx="71" cy="132" r="2.4"/><circle cx="122" cy="132" r="2.4"/>
+            <circle cx="172.5" cy="132" r="3.5"/><circle cx="223" cy="132" r="2.4"/><circle cx="273.5" cy="132" r="2.4"/>
+            <circle cx="324" cy="132" r="3.5"/><circle cx="374.5" cy="132" r="2.4"/><circle cx="425" cy="132" r="2.4"/>
+            <circle cx="475.5" cy="132" r="3.5"/><circle cx="526" cy="132" r="2.4"/><circle cx="576.5" cy="132" r="2.4"/>
+            <circle cx="627" cy="132" r="3.5"/><circle cx="677.5" cy="132" r="2.4"/><circle cx="728" cy="132" r="2.4"/>
+            <circle cx="778.5" cy="132" r="3.5"/><circle cx="829" cy="132" r="2.4"/>
+          </g>
+          <text x="20" y="156" fill="#6e6e73">128 BPM · 每格一拍(0.469s)· 大点为小节重音 · 场景按小节对齐</text>
+        </g>
+      </svg>
+      <figcaption><b>图 1</b> · 八场景 × 音乐网格。核心规划为 8 小节 15 秒(NFRAMES=450 @30fps);交付版 v7 在同一网格上扩展为 23.03 秒。</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2><span class="idx">03</span>中文排版与渲染管线</h2>
+      <p>引擎的西文字体(SF/Inter 系)不含 CJK 字形,直接排中文会得到整行豆腐块。我们的方案不走网络字体:<code>fonts.cjk()</code> 按优先级加载系统字体(PingFang.ttc → Hiragino Sans GB),离线可用、字形与 macOS 系统一致;中英文混排行统一走该管道。渲染管线全程 2× 超采样后降采样,边缘抗锯齿;每帧叠加 bloom、色差、暗角、颗粒与色级的后期链,由逐场景参数表控制。</p>
+      <figure class="fig">
+      <svg viewBox="0 0 860 128" role="img" aria-label="渲染管线">
+        <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#34d399"/></marker></defs>
+        <g font-family="Menlo,monospace" font-size="11.5">
+          <rect x="14" y="36" width="130" height="44" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
+          <text x="79" y="63" fill="#f5f5f7" text-anchor="middle">场景代码 × 8</text>
+          <line x1="148" y1="58" x2="180" y2="58" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <rect x="184" y="36" width="150" height="44" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
+          <text x="259" y="63" fill="#f5f5f7" text-anchor="middle">逐帧渲染 ss=2</text>
+          <line x1="338" y1="58" x2="370" y2="58" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <rect x="374" y="36" width="150" height="44" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
+          <text x="449" y="56" fill="#f5f5f7" text-anchor="middle">后期链</text>
+          <text x="449" y="73" fill="#6e6e73" text-anchor="middle" font-size="10">bloom/色差/暗角/颗粒</text>
+          <line x1="528" y1="58" x2="560" y2="58" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <rect x="564" y="36" width="140" height="44" rx="10" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
+          <text x="634" y="56" fill="#f5f5f7" text-anchor="middle">NVENC 硬编</text>
+          <text x="634" y="73" fill="#6e6e73" text-anchor="middle" font-size="10">失败 → libx264 crf16</text>
+          <line x1="708" y1="58" x2="740" y2="58" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <rect x="744" y="36" width="102" height="44" rx="10" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
+          <text x="795" y="63" fill="#34d399" text-anchor="middle">mp4 + 音轨</text>
+        </g>
+      </svg>
+      <figcaption><b>图 2</b> · 端到端管线。音频由引擎按同一 BPM 网格合成,编码与混流一步完成。</figcaption>
+      </figure>
+      <div class="pmetrics">
+        <div class="pm"><div class="v"><em>23.03</em>s</div><div class="k">成片时长(mdls 实测)</div></div>
+        <div class="pm"><div class="v"><em>544</em> KB</div><div class="k">成片体积(557,098 B)</div></div>
+        <div class="pm"><div class="v">1920×1080</div><div class="k">分辨率 · 30fps</div></div>
+        <div class="pm"><div class="v">8</div><div class="k">场景(每场景一小节)</div></div>
+      </div>
+      <p class="file">引擎 <b>tools/jutian-promo/</b>(mg/ 渲染内核 + jutian_promo/ 场景与构建)· 成片 <b>巨天agent-宣传片-v7.mp4</b></p>
+    </section>
+
+    <section>
+      <h2><span class="idx">04</span>局限</h2>
+      <ul>
+        <li>渲染耗时以分钟计(逐帧 + 超采样),不适合即席预览;交互期以单帧探针模式(<code>--at 场景:时间</code>)迭代,全片渲染只在定稿后执行。</li>
+        <li>场景内动画参数为手写代码,对非工程角色不友好;「文案 → 场景参数」的配置层是后续方向。</li>
+        <li>核心规划(8 小节 15s)与交付版(23.03s)存在版本差:交付版在相同网格上扩展了镜头时长,引擎两种规格均支持。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><span class="idx">05</span>数据来源</h2>
+      <p>成片参数:<code>mdls</code>(kMDItemDurationSeconds = 23.034;PixelWidth/Height = 1920/1080)与文件字节数 557,098(2026-10-06 实测)。网格常量:<code>jutian_promo/theme.py</code>(BPM=128,BEAT=0.46875s,BAR=1.875s,NFRAMES=450)。字体与回退策略:<code>mg/fonts.py</code> 的 <code>cjk()</code>;编码回退:<code>jutian_promo/build.py</code>。</p>
+    </section>
+
+    <div class="pnav">
+      <a href="p4-single-dir-data.html" style="text-align:left">← 上一篇:P4 单目录数据架构</a>
+      <a class="back" href="../research.html">全部论文</a>
+      <a href="p1-zero-trust-gateway.html" style="text-align:right">回到 P1 →</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="col"><b>LY AI HUB</b><div class="fine">本地优先 · 数据归你 · MIT。</div></div>
+    <div class="col"><b>导航</b><a href="../index.html">首页</a><a href="../projects.html">项目</a><a href="../research.html">研究</a></div>
+  </div>
+</footer>
+</body>
+</html>

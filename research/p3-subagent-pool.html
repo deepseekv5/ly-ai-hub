@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P3 · 取消安全的并行子代理调度池 — LY AI HUB</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="../index.html"><span class="dot"></span>LY AI HUB</a>
+    <div class="links">
+      <a href="../index.html">首页</a>
+      <a href="../projects.html">项目</a>
+      <a href="../research.html" class="on">研究</a>
+    </div>
+    <a class="gh" href="https://github.com/deepseekv5" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</nav>
+
+<header class="paper-hero">
+  <div class="wrap">
+    <span class="no">PAPER · 03 · SYSTEMS</span>
+    <h1>取消安全的并行子代理调度池</h1>
+    <div class="en">A Cancellation-Safe Parallel Sub-Agent Dispatch Pool</div>
+    <div class="meta">
+      <span class="chip g">2026-10</span>
+      <span class="chip">LY AI HUB</span>
+      <span class="chip">巨天agent v7.0.0</span>
+      <span class="chip">并发 3 · 1–5 agents</span>
+    </div>
+    <div class="abstract">
+      <b>摘要</b> — 让主对话 AI 能「派出 AI」是巨天agent 的核心能力:<code>dispatch_subagents</code> 允许模型一次性派发 1–5 个子代理,每个都拥有完整工具能力。本文描述支撑该能力的调度池设计:固定 worker 池(并发 3)以游标领取任务,取消信号在池内传播并将未启动任务标记为「已取消」、保留已完成产出,进度以窗口事件实时推送至桌面侧栏与手机远程。我们给出机制、可复现参数与端到端数据通路,并明确说明:因执行依赖外部模型服务,本文不报告墙钟时延基准,以避免不可复现的数字。
+    </div>
+  </div>
+</header>
+
+<article class="paper">
+  <div class="wrap">
+
+    <section>
+      <h2><span class="idx">01</span>问题:并行、可停、可观察,三者兼得</h2>
+      <p>一次调研任务往往可拆为互不依赖的几块。串行执行浪费墙钟时间;无界并发则会在模型速率限制前自我拥塞。更难的是<strong>取消语义</strong>:用户在 3/5 个子代理完成时按下停止,系统必须回答三个问题——在跑的怎么办?没跑的算什么?已完成的结果丢不丢?此外,进度必须可观察:桌面侧栏与手机远程都要看到每个子代理的阶段与产出。</p>
+    </section>
+
+    <section>
+      <h2><span class="idx">02</span>设计</h2>
+      <figure class="fig">
+      <svg viewBox="0 0 860 250" role="img" aria-label="worker 池示意">
+        <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#34d399"/></marker></defs>
+        <g font-family="Menlo,monospace" font-size="12">
+          <rect x="20" y="70" width="150" height="110" rx="14" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
+          <text x="95" y="98" fill="#a1a1a6" text-anchor="middle">任务队列</text>
+          <rect x="42" y="112" width="106" height="24" rx="6" fill="rgba(16,163,127,0.14)" stroke="rgba(52,211,153,0.5)"/>
+          <text x="95" y="128" fill="#34d399" text-anchor="middle">task 1</text>
+          <rect x="42" y="142" width="106" height="24" rx="6" fill="rgba(16,163,127,0.14)" stroke="rgba(52,211,153,0.5)"/>
+          <text x="95" y="158" fill="#34d399" text-anchor="middle">task 2 … 5</text>
+          <line x1="176" y1="124" x2="240" y2="80"  stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <line x1="176" y1="128" x2="240" y2="125" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <line x1="176" y1="132" x2="240" y2="170" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <g>
+            <rect x="246" y="56"  width="170" height="46" rx="11" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
+            <text x="331" y="76"  fill="#f5f5f7" text-anchor="middle">worker #1</text>
+            <text x="331" y="93"  fill="#6e6e73" text-anchor="middle" font-size="10.5">游标 cursor++ 领取</text>
+            <rect x="246" y="102" width="170" height="46" rx="11" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
+            <text x="331" y="122" fill="#f5f5f7" text-anchor="middle">worker #2</text>
+            <text x="331" y="139" fill="#6e6e73" text-anchor="middle" font-size="10.5">cursor++ 领取</text>
+            <rect x="246" y="148" width="170" height="46" rx="11" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
+            <text x="331" y="168" fill="#f5f5f7" text-anchor="middle">worker #3</text>
+            <text x="331" y="185" fill="#6e6e73" text-anchor="middle" font-size="10.5">cursor++ 领取</text>
+          </g>
+          <line x1="420" y1="125" x2="454" y2="125" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <rect x="458" y="86" width="180" height="78" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
+          <text x="548" y="112" fill="#a1a1a6" text-anchor="middle">每个子代理</text>
+          <text x="548" y="132" fill="#6e6e73" text-anchor="middle" font-size="11">完整工具循环:LLM ↔</text>
+          <text x="548" y="150" fill="#6e6e73" text-anchor="middle" font-size="11">38 工具 + MCP</text>
+          <line x1="642" y1="125" x2="676" y2="125" stroke="#34d399" stroke-width="1.3" marker-end="url(#ar)"/>
+          <rect x="680" y="86" width="160" height="78" rx="12" fill="rgba(16,163,127,0.09)" stroke="rgba(52,211,153,0.45)"/>
+          <text x="760" y="112" fill="#34d399" text-anchor="middle">subagent-progress</text>
+          <text x="760" y="132" fill="#6e6e73" text-anchor="middle" font-size="11">窗口事件 → 桌面侧栏</text>
+          <text x="760" y="150" fill="#6e6e73" text-anchor="middle" font-size="11">→ 手机远程进度卡</text>
+        </g>
+      </svg>
+      <figcaption><b>图 1</b> · 固定 worker 池:3 个 worker 以共享游标领取 1–5 个任务,避免无界并发;每个 worker 内跑完整的「模型 ↔ 工具」循环。</figcaption>
+      </figure>
+
+      <h3 style="font-size:19px;margin:26px 0 12px">取消语义</h3>
+      <table>
+        <thead><tr><th>任务状态(取消瞬间)</th><th>处置</th><th>产出</th></tr></thead>
+        <tbody>
+          <tr><td>正在执行</td><td>当前轮完成后停止;若底层请求已中止,以已收到内容收尾</td><td>尽可能保留部分输出</td></tr>
+          <tr><td>尚未被领取</td><td>游标推进时检查 <code>signal.aborted</code>,直接标记「已取消」</td><td>不产生</td></tr>
+          <tr><td>已完成</td><td>不受影响</td><td>完整保留,汇总时可用</td></tr>
+        </tbody>
+      </table>
+      <p>实现上,取消检查放在 worker 领取任务的游标推进处,而非任务内部散点——一处检查覆盖全部未启动任务,语义清晰且无竞态。</p>
+    </section>
+
+    <section>
+      <h2><span class="idx">03</span>实现与参数</h2>
+      <pre><code>// 调度核心(节选):固定 worker 池 + 游标领取 + 取消检查
+const results: string[] = new Array(states.length).fill('')
+let cursor = 0
+async function worker() {
+  while (cursor &lt; states.length) {
+    if (opts.signal.aborted) {              // 一处检查,清空全部未启动
+      while (cursor &lt; states.length) {
+        const s = states[cursor++]; s.status = 'done'; s.phase = '已取消'
+      }
+      return
+    }
+    const idx = cursor++                    // 游标领取,天然负载均衡
+    await runOne(states[idx], idx)
+  }
+}
+await Promise.all([worker(), worker(), worker()])   // 并发 3</code></pre>
+      <div class="pmetrics">
+        <div class="pm"><div class="v"><em>3</em></div><div class="k">worker 并发</div></div>
+        <div class="pm"><div class="v">1–5</div><div class="k">单次派发子代理数(工具参数约束)</div></div>
+        <div class="pm"><div class="v">1 处</div><div class="k">取消检查点(领取处)</div></div>
+        <div class="pm"><div class="v">38</div><div class="k">每个子代理可用工具数</div></div>
+      </div>
+      <p class="file">实现 <b>src/renderer/engine/subagent.ts</b> · 进度事件 <b>window event: subagent-progress</b> · 消费方 <b>SubAgentTracker.tsx / remote.html</b></p>
+    </section>
+
+    <section>
+      <h2><span class="idx">04</span>端到端数据通路</h2>
+      <p>每个子代理的状态机(待命 → 执行中 → 阶段产出 → 完成 / 已取消)经窗口事件 <code>subagent-progress</code> 推送;桌面侧栏 <code>SubAgentTracker</code> 订阅渲染实时进度条;手机远程经由同一事件的服务端桥,在会话流里渲染进度卡片。三端看到的是<strong>同一份状态机</strong>,不存在各自轮询的口径差。</p>
+    </section>
+
+    <section>
+      <h2><span class="idx">05</span>局限(诚实声明)</h2>
+      <ul>
+        <li><strong>不报告墙钟加速比</strong>:端到端时延由外部模型服务的吞吐与限流主导,同一任务在不同 key/时段下差异可达数倍。发布不可复现的加速比曲线违背本实验室的数据原则;机制与参数(并发 3、1–5 派发、取消语义)均为代码事实,可复现。</li>
+        <li>worker 池并发数当前为编译期常量;按任务画像自适应调节是后续方向。</li>
+        <li>子代理间不共享中间记忆,协作以「主对话汇总」为边界;员工长协作属集群指挥室(另一子系统)。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><span class="idx">06</span>数据来源</h2>
+      <p>机制、代码节选与参数:巨天agent 仓库 <a style="color:#34d399" href="https://github.com/deepseekv5/jutian-agent/blob/main/src/renderer/engine/subagent.ts" target="_blank" rel="noopener">src/renderer/engine/subagent.ts</a>(commit 447559e,2026-10-06);工具约束:<code>src/shared/builtin-tools.json</code> 的 <code>dispatch_subagents</code> schema。本文未引用任何时延基准数据。</p>
+    </section>
+
+    <div class="pnav">
+      <a href="p2-escape-first-rendering.html" style="text-align:left">← 上一篇:P2 转义优先渲染管道</a>
+      <a class="back" href="../research.html">全部论文</a>
+      <a href="p4-single-dir-data.html" style="text-align:right">下一篇:P4 单目录数据架构 →</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="col"><b>LY AI HUB</b><div class="fine">本地优先 · 数据归你 · MIT。</div></div>
+    <div class="col"><b>导航</b><a href="../index.html">首页</a><a href="../projects.html">项目</a><a href="../research.html">研究</a></div>
+  </div>
+</footer>
+</body>
+</html>

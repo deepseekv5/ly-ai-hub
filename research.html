@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>研究 — LY AI HUB</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html"><span class="dot"></span>LY AI HUB</a>
+    <div class="links">
+      <a href="index.html">首页</a>
+      <a href="projects.html">项目</a>
+      <a href="research.html" class="on">研究</a>
+    </div>
+    <a class="gh" href="https://github.com/deepseekv5" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</nav>
+
+<header class="hero" style="padding:110px 0 80px">
+  <div class="wrap">
+    <div class="kicker">Research</div>
+    <h1 style="font-size:clamp(40px,6vw,68px)">工程研究</h1>
+    <p class="sub">五篇技术论文,全部来自巨天agent 的真实研发:每一篇描述一个我们亲手建造并实测过的系统,附可复现的数据、代码位置与诚实的局限说明。</p>
+  </div>
+</header>
+
+<section class="sec" style="padding-top:10px">
+  <div class="wrap">
+    <div class="grid c2">
+
+      <a class="card rcard reveal" href="research/p1-zero-trust-gateway.html">
+        <span class="no">PAPER · 01 · SECURITY</span>
+        <h3>本地智能体的同宿主零信任网关</h3>
+        <p>为常驻本机的 AI 后端重新设计访问控制:同宿主 Origin 判定、DNS-rebinding 检测、密钥掩码与回写保护。六类攻击向量实测全部拦截,全历史提交零密钥泄漏。</p>
+        <span class="go">阅读全文 →</span>
+      </a>
+
+      <a class="card rcard reveal" href="research/p2-escape-first-rendering.html">
+        <span class="no">PAPER · 02 · SECURITY</span>
+        <h3>面向 LLM 输出的转义优先渲染管道</h3>
+        <p>模型输出就是不可信输入。对桌面渲染器与远程单页的三个 Markdown 渲染面做系统审计,发现一处可执行注入并修复;给出「先转义、再增强、后中和」的三段式管道。</p>
+        <span class="go">阅读全文 →</span>
+      </a>
+
+      <a class="card rcard reveal" href="research/p3-subagent-pool.html">
+        <span class="no">PAPER · 03 · SYSTEMS</span>
+        <h3>取消安全的并行子代理调度池</h3>
+        <p>并发 3 的 worker 池驱动 1–5 个全能力子代理:游标领取、取消传播、部分结果保留、进度事件三端同步。给出机制设计与可复现参数,并诚实标注基准测试的边界。</p>
+        <span class="go">阅读全文 →</span>
+      </a>
+
+      <a class="card rcard reveal" href="research/p4-single-dir-data.html">
+        <span class="no">PAPER · 04 · DATA</span>
+        <h3>单目录本地数据架构与无损迁移</h3>
+        <p>「本地优先」的代价是数据目录会随版本演化。把两个历史目录合并为一:旧有新无才搬、搬空才删、冲突副本零丢失、配对码跨版本不变。33 项实测迁移记录。</p>
+        <span class="go">阅读全文 →</span>
+      </a>
+
+      <a class="card rcard reveal" href="research/p5-bpm-film-engine.html">
+        <span class="no">PAPER · 05 · MEDIA</span>
+        <h3>128 BPM 网格上的程序化品牌影片渲染</h3>
+        <p>品牌影片作为代码产物:8 个场景对齐 128 BPM 音乐网格,系统级中文字体,2× 超采样,NVENC 失败自动回退。交付 23.03 秒、544 KB 的 1080p 影片。</p>
+        <span class="go">阅读全文 →</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="callout reveal">
+      <b>方法声明</b> — 我们不发表无法复现的数字。每篇论文的「实测」小节给出产生该数据的命令与条件;依赖外部服务(如模型 API)因而无法基准化的指标,会在「局限」中明确说明,绝不以示意图冒充实测曲线。
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="col">
+      <b>LY AI HUB</b>
+      <div class="fine">本地优先 · 数据归你 · MIT。</div>
+    </div>
+    <div class="col">
+      <b>导航</b>
+      <a href="index.html">首页</a>
+      <a href="projects.html">项目</a>
+      <a href="research.html">研究</a>
+    </div>
+    <div class="col">
+      <b>链接</b>
+      <a href="https://github.com/deepseekv5/jutian-agent" target="_blank" rel="noopener">巨天agent · GitHub ↗</a>
+      <a href="https://github.com/deepseekv5" target="_blank" rel="noopener">GitHub 组织 ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>

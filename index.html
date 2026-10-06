@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LY AI HUB — 桌面智能体与程序化媒体实验室</title>
+<meta name="description" content="LY AI HUB 是巨天agent 背后的研究与工程实验室：本地优先的桌面智能体、零信任安全网关、程序化品牌影片渲染。所有公开数字均可溯源。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html"><span class="dot"></span>LY AI HUB</a>
+    <div class="links">
+      <a href="index.html" class="on">首页</a>
+      <a href="projects.html">项目</a>
+      <a href="research.html">研究</a>
+    </div>
+    <a class="gh" href="https://github.com/deepseekv5" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">LY AI HUB · Research &amp; Engineering</div>
+    <h1>把智能体<br>装进<span class="g">桌面</span>。</h1>
+    <p class="sub">我们研究并建造本地优先的桌面智能体：真实的终端与文件系统、并行子代理、零信任安全网关，以及一台能自己画品牌影片的渲染机。每一个公开的数字，都能溯源。</p>
+    <div class="cta">
+      <a class="btn p" href="projects.html">看我们的项目</a>
+      <a class="btn g" href="research.html">读研究论文</a>
+    </div>
+  </div>
+</header>
+
+<div class="metrics">
+  <div class="wrap">
+    <div class="metric reveal"><div class="n">38</div><div class="l">内置工具 · 单一 schema 三端同步</div></div>
+    <div class="metric reveal"><div class="n">0</div><div class="l">密钥泄漏 · 全历史提交扫描</div></div>
+    <div class="metric reveal"><div class="n">5</div><div class="l">篇工程技术论文 · 均附实测数据</div></div>
+    <div class="metric reveal"><div class="n"><em>23.03</em>s</div><div class="l">程序化渲染的品牌影片 · 544 KB</div></div>
+  </div>
+</div>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">01 · What we build</div>
+      <h2>三件事,做到底</h2>
+      <p>实验室的全部产出围绕一条主线:让 AI 拥有真实世界的执行能力,同时不牺牲本地的安全与隐私。</p>
+    </div>
+    <div class="grid c3">
+      <div class="card reveal">
+        <span class="tag">Product</span>
+        <h3>巨天agent</h3>
+        <p>桌面 AI 工作台。38 个内置工具直连真实终端与文件系统,并行子代理池,Computer Use 屏幕操作循环,手机远程,MCP 插件生态。MIT 开源。</p>
+        <div class="meta"><span>v7.0.0</span><span>MIT</span><span>macOS · Windows</span></div>
+        <a class="go" href="projects.html">项目详情 →</a>
+      </div>
+      <div class="card reveal">
+        <span class="tag">Research</span>
+        <h3>安全与系统研究</h3>
+        <p>五篇工程论文:同宿主零信任网关、转义优先渲染管道、取消安全的子代理调度、单目录数据架构、音乐网格上的程序化影片。每篇附实测数据与局限说明。</p>
+        <div class="meta"><span>5 papers</span><span>all measured</span></div>
+        <a class="go" href="research.html">进入研究 →</a>
+      </div>
+      <div class="card reveal">
+        <span class="tag">Craft</span>
+        <h3>程序化媒体</h3>
+        <p>品牌影片不用剪辑软件——它由代码渲染:128 BPM 音乐网格、8 个场景、系统级中文字体、超采样与硬编码回退。交付 1920×1080、544 KB。</p>
+        <div class="meta"><span>1920×1080</span><span>23.03s</span><span>544 KB</span></div>
+        <a class="go" href="research/p5-bpm-film-engine.html">读论文 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">02 · Featured research</div>
+      <h2>研究精选</h2>
+    </div>
+    <div class="grid c2">
+      <a class="card rcard reveal" href="research/p1-zero-trust-gateway.html">
+        <span class="no">PAPER · 01</span>
+        <h3>本地智能体的同宿主零信任网关</h3>
+        <p>CORS 从一开始就不该存在。同宿主 Origin 判定 + DNS-rebinding 421 + 密钥掩码与回写保护,六类攻击实测全部拦截。</p>
+        <span class="go">阅读 →</span>
+      </a>
+      <a class="card rcard reveal" href="research/p4-single-dir-data.html">
+        <span class="no">PAPER · 04</span>
+        <h3>单目录本地数据架构与无损迁移</h3>
+        <p>两个历史数据目录合并为一,33 项一次搬空、12 项冲突副本零丢失、配对码跨版本不变。迁移算法与实测记录。</p>
+        <span class="go">阅读 →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="callout reveal">
+      <b>数据说明</b> — 本站展示的每一个数字均可溯源:仓库实测命令与输出、构建日志、CI 运行记录、npm audit 报告。各论文页脚附「数据来源」小节。我们不发布无法复现的数字。
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="col">
+      <b>LY AI HUB</b>
+      <div class="fine">巨天agent 背后的研究与工程实验室。本地优先 · 数据归你 · MIT。</div>
+    </div>
+    <div class="col">
+      <b>导航</b>
+      <a href="index.html">首页</a>
+      <a href="projects.html">项目</a>
+      <a href="research.html">研究</a>
+    </div>
+    <div class="col">
+      <b>链接</b>
+      <a href="https://github.com/deepseekv5/jutian-agent" target="_blank" rel="noopener">巨天agent · GitHub ↗</a>
+      <a href="https://github.com/deepseekv5" target="_blank" rel="noopener">GitHub 组织 ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>

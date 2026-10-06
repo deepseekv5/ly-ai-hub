@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P2 · 面向 LLM 输出的转义优先渲染管道 — LY AI HUB</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="../index.html"><span class="dot"></span>LY AI HUB</a>
+    <div class="links">
+      <a href="../index.html">首页</a>
+      <a href="../projects.html">项目</a>
+      <a href="../research.html" class="on">研究</a>
+    </div>
+    <a class="gh" href="https://github.com/deepseekv5" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</nav>
+
+<header class="paper-hero">
+  <div class="wrap">
+    <span class="no">PAPER · 02 · SECURITY</span>
+    <h1>面向 LLM 输出的转义优先渲染管道</h1>
+    <div class="en">An Escape-First Rendering Pipeline for LLM-Generated Markdown</div>
+    <div class="meta">
+      <span class="chip g">2026-10</span>
+      <span class="chip">LY AI HUB</span>
+      <span class="chip">巨天agent v7.0.0</span>
+      <span class="chip">3 渲染面审计</span>
+    </div>
+    <div class="abstract">
+      <b>摘要</b> — 智能体界面渲染的每一行 Markdown 都来自模型输出,而模型输出是不可信输入:一条被注入 <code>&lt;img onerror&gt;</code> 的回复一旦进入 <code>innerHTML</code>,就在一个能调用终端工具的同源渲染进程里获得执行权。我们对巨天agent 的全部 Markdown 渲染面做了系统审计,共识别 3 个面:桌面代码模式预览(存在可执行注入,已修复)、手机远程单页(转义正确,但脚本协议链接未拦,已中和)、知识库打印管线(先转义,安全)。本文给出修复所采用的「先转义、再增强、后中和」三段式管道,并给出攻击载荷与修复后的行为对照。
+    </div>
+  </div>
+</header>
+
+<article class="paper">
+  <div class="wrap">
+
+    <section>
+      <h2><span class="idx">01</span>威胁模型:同源注入即工具执行</h2>
+      <p>巨天agent 的渲染进程与后端 <code>:3211</code> 同源,具备调用 <code>/api/tools/execute</code>(含 <code>shell</code>)的能力——这正是产品形态的要求。因此传统的「XSS 只能偷 Cookie」评估在这里不成立:<strong>本场景下一次成功的注入近似于本机任意命令执行</strong>。注入源有三:模型输出(可被提示词诱导)、被预览的仓库文件内容、工具返回的网页抓取结果。三者都不可信。</p>
+    </section>
+
+    <section>
+      <h2><span class="idx">02</span>审计:三个渲染面</h2>
+      <table>
+        <thead><tr><th>渲染面</th><th>管道</th><th>审计结论</th><th>处置</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>代码模式 Markdown 预览<br><span style="color:#6e6e73;font-size:12px">MarkdownPreview.tsx</span></td>
+            <td class="mono">regex-md → dangerouslySetInnerHTML</td>
+            <td style="color:#f87171">裸 HTML 未转义,可执行注入</td>
+            <td class="ok">已修复</td>
+          </tr>
+          <tr>
+            <td>手机远程单页<br><span style="color:#6e6e73;font-size:12px">public/remote.html</span></td>
+            <td class="mono">escape-&lt; → marked → innerHTML</td>
+            <td style="color:#fbbf24">脚本注入已死;javascript: 链接可点</td>
+            <td class="ok">已中和</td>
+          </tr>
+          <tr>
+            <td>知识库打印<br><span style="color:#6e6e73;font-size:12px">KnowledgeBase.tsx</span></td>
+            <td class="mono">escape-first → regex-md → innerHTML</td>
+            <td style="color:#34d399">转义在先,安全</td>
+            <td class="ok">保持</td>
+          </tr>
+        </tbody>
+      </table>
+      <figure class="fig">
+      <svg viewBox="0 0 860 210" role="img" aria-label="修复前后对照">
+        <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#34d399"/></marker></defs>
+        <g font-family="Menlo,monospace" font-size="12">
+          <text x="20" y="30" fill="#6e6e73">修复前</text>
+          <rect x="20" y="44" width="240" height="44" rx="10" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.4)"/>
+          <text x="140" y="71" fill="#f87171" text-anchor="middle">&lt;img src=x onerror=…&gt;</text>
+          <line x1="264" y1="66" x2="298" y2="66" stroke="rgba(239,68,68,0.8)" stroke-width="1.4" marker-end="url(#ar)"/>
+          <rect x="302" y="44" width="200" height="44" rx="10" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.4)"/>
+          <text x="402" y="71" fill="#f87171" text-anchor="middle">regex 增强(未转义)</text>
+          <line x1="506" y1="66" x2="540" y2="66" stroke="rgba(239,68,68,0.8)" stroke-width="1.4" marker-end="url(#ar)"/>
+          <rect x="544" y="44" width="130" height="44" rx="10" fill="rgba(239,68,68,0.14)" stroke="rgba(239,68,68,0.6)"/>
+          <text x="609" y="71" fill="#f87171" text-anchor="middle">innerHTML</text>
+          <line x1="678" y1="66" x2="712" y2="66" stroke="rgba(239,68,68,0.8)" stroke-width="1.4" marker-end="url(#ar)"/>
+          <text x="724" y="71" fill="#f87171">执行 ⚡</text>
+          <text x="20" y="130" fill="#6e6e73">修复后</text>
+          <rect x="20" y="144" width="240" height="44" rx="10" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.4)"/>
+          <text x="140" y="171" fill="#f87171" text-anchor="middle">&lt;img src=x onerror=…&gt;</text>
+          <line x1="264" y1="166" x2="298" y2="166" stroke="#34d399" stroke-width="1.4" marker-end="url(#ar)"/>
+          <rect x="302" y="144" width="240" height="44" rx="10" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
+          <text x="422" y="171" fill="#34d399" text-anchor="middle">① 全元字符转义 &amp; &lt; &gt; "</text>
+          <line x1="546" y1="166" x2="580" y2="166" stroke="#34d399" stroke-width="1.4" marker-end="url(#ar)"/>
+          <rect x="584" y="144" width="230" height="44" rx="10" fill="rgba(16,163,127,0.1)" stroke="rgba(52,211,153,0.45)"/>
+          <text x="699" y="171" fill="#34d399" text-anchor="middle">② scheme 中和 → href="#"</text>
+          <text x="836" y="171" fill="#34d399" text-anchor="end">✓ 文本</text>
+        </g>
+      </svg>
+      <figcaption><b>图 1</b> · 同一载荷在修复前后的命运。<span class="badge-meas">代码级验证</span></figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2><span class="idx">03</span>修复:三段式管道</h2>
+      <p>修复后的 <code>renderMarkdown</code>(<code>src/renderer/code/MarkdownPreview.tsx</code>)遵循三段式:</p>
+      <ol>
+        <li><strong>先转义</strong>——管道第一步统一处理 <code>&amp; &lt; &gt; "</code>。引号必须转义:否则 <code>[x](a" onmouseover="…)</code> 可从 <code>href</code> 属性破出。</li>
+        <li><strong>再增强</strong>——既有 Markdown 正则(标题、粗体、列表、代码块)在已转义文本上运行,生成的标签全部由管道自己产出。代码块内容因此无需二次转义(避免双重转义显示错误)。</li>
+        <li><strong>后中和</strong>——渲染完成后统一 neutralize <code>href/src="javascript:|vbscript:…"</code>,覆盖 markdown 链接语法引入的脚本协议。</li>
+      </ol>
+      <pre><code>// 修复后管道首尾(节选)
+const html = md
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+  .replace(/```(\w*)\n([\s\S]*?)```/g, (_,l,c) =>
+    `&lt;pre...&gt;&lt;code...&gt;${c.trim()}&lt;/code&gt;&lt;/pre&gt;`)   // 内容已转义,不再二次
+  ...
+  .replace(/ (?:href|src)="(?:javascript|vbscript):[^"]*"/gi, ' href="#"')</code></pre>
+      <p>手机远程单页同日加固:其管道本就以 <code>text.replace(/&lt;/g,'&amp;lt;')</code> 先转义再进 marked,脚本注入不可行;本次补上同样的 scheme 中和。</p>
+      <p class="file">实现 <b>src/renderer/code/MarkdownPreview.tsx</b> · <b>public/remote.html</b></p>
+    </section>
+
+    <section>
+      <h2><span class="idx">04</span>局限</h2>
+      <ul>
+        <li>正则级 Markdown 渲染不做完整规范解析,遇到极隐蔽的构造(如嵌套属性拆分)建议以「先转义」为唯一防线——本管道正满足该性质:所有原始元字符在增强前已被消灭。</li>
+        <li><code>data:image/…</code> 图片地址未拦(预览场景无害);若未来预览用于不可信协作场景,需引入 allowlist。</li>
+        <li>主对话气泡的渲染由 React 自定义组件完成(默认转义),不在本文审计范围;后续可对齐同一三段式以统一实现。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><span class="idx">05</span>数据来源</h2>
+      <p>审计对象与修复 diff:巨天agent 仓库 commit <code>10522ff</code>(2026-10-06)。渲染面清单来源:全渲染层 <code>innerHTML / dangerouslySetInnerHTML</code> 检索(3 处命中,逐面人工验证)。载荷行为对照:修复前管道逐正则推演 + 修复后构建产物实测。</p>
+    </section>
+
+    <div class="pnav">
+      <a href="p1-zero-trust-gateway.html" style="text-align:left">← 上一篇:P1 同宿主零信任网关</a>
+      <a class="back" href="../research.html">全部论文</a>
+      <a href="p3-subagent-pool.html" style="text-align:right">下一篇:P3 子代理调度池 →</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="col"><b>LY AI HUB</b><div class="fine">本地优先 · 数据归你 · MIT。</div></div>
+    <div class="col"><b>导航</b><a href="../index.html">首页</a><a href="../projects.html">项目</a><a href="../research.html">研究</a></div>
+  </div>
+</footer>
+</body>
+</html>
