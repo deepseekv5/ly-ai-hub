@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LY AI HUB — 桌面智能体与程序化媒体实验室</title>
-<meta name="description" content="LY AI HUB 是巨天agent 背后的研究与工程实验室：本地优先的桌面智能体、零信任安全网关、程序化品牌影片渲染。所有公开数字均可溯源。">
+<meta name="description" content="LY AI HUB 是巨天agent 背后的研究与工程实验室：本地优先的桌面智能体、零信任安全网关、程序化品牌影片渲染。">
+<meta property="og:title" content="LY AI HUB — 把智能体装进桌面">
+<meta property="og:description" content="本地优先的桌面智能体：真实的终端与文件系统、办公/编程双形态、并行子代理、零信任安全网关。">
+<meta property="og:type" content="website">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -23,12 +26,48 @@
 
 <header class="hero">
   <div class="wrap">
-    <div class="kicker">LY AI HUB · Research &amp; Engineering</div>
+    <div class="kicker">Research &amp; Engineering</div>
     <h1>把智能体<br>装进<span class="g">桌面</span>。</h1>
-    <p class="sub">我们研究并建造本地优先的桌面智能体：真实的终端与文件系统、并行子代理、零信任安全网关，以及一台能自己画品牌影片的渲染机。每一个公开的数字，都能溯源。</p>
+    <p class="sub">真实终端、真实文件、真实交付。本地优先的桌面智能体，办公与编程两种工作形态，数据始终留在你自己的机器上。</p>
     <div class="cta">
       <a class="btn p" href="projects.html">看我们的项目</a>
       <a class="btn g" href="research.html">读研究论文</a>
+    </div>
+  </div>
+
+  <!-- 产品真身：按应用实际布局绘制（侧栏 / 标签页 / 对话 / 状态条） -->
+  <div class="wrap">
+    <div class="app-mock reveal" aria-label="巨天agent 界面示意">
+      <div class="am-bar">
+        <span class="am-lights"><i></i><i></i><i></i></span>
+        <span class="am-title">巨天agent</span>
+      </div>
+      <div class="am-body">
+        <aside class="am-side">
+          <div class="am-brand"><span class="am-dot"></span>巨天agent</div>
+          <div class="am-mode office"><span class="am-mdot"></span>办公模式</div>
+          <nav class="am-nav">
+            <span class="on">对话</span><span>AI 角色</span><span>调研</span><span>Code</span><span>知识库</span><span>文件</span>
+          </nav>
+          <div class="am-side-foot">本地优先 · 零遥测</div>
+        </aside>
+        <section class="am-main">
+          <div class="am-tabs"><span class="on">对话</span><span>调研</span><span>Code</span><span class="plus">＋</span></div>
+          <div class="am-chat">
+            <div class="am-msg user">把这份季度数据整理成一页汇报，做成 PPT 给我</div>
+            <div class="am-tool"><span class="am-tchip">read_file</span> 读取 数据/2026Q3.xlsx<span class="am-ok">✓</span></div>
+            <div class="am-tool"><span class="am-tchip">write_file</span> 生成 季度汇报.pptx<span class="am-ok">✓</span></div>
+            <div class="am-msg ai">已生成 <b>季度汇报.pptx</b>（8 页，含图表）。数据落在 <code>~/Desktop/lyclaw/</code>，需要我调整配色或补一页结论吗？</div>
+          </div>
+          <div class="am-composer">
+            <div class="am-status">
+              <span class="am-chip office"><span class="am-mdot"></span>办公模式</span>
+              <span>gpt-oss-120b</span><span>lyclaw</span>
+            </div>
+            <div class="am-input">给 巨天 发送消息<span class="am-caret"></span></div>
+          </div>
+        </section>
+      </div>
     </div>
   </div>
 </header>
@@ -36,38 +75,62 @@
 <div class="metrics">
   <div class="wrap">
     <div class="metric reveal"><div class="n">39</div><div class="l">内置工具 · 单一 schema 三端同步</div></div>
+    <div class="metric reveal"><div class="n">2</div><div class="l">工作形态 · 办公与编程彻底分家</div></div>
     <div class="metric reveal"><div class="n">21</div><div class="l">免费模型 · 免 key 零门槛</div></div>
     <div class="metric reveal"><div class="n">5</div><div class="l">篇工程技术论文 · 均附实测数据</div></div>
-    <div class="metric reveal"><div class="n"><em>23.03</em>s</div><div class="l">程序化渲染的品牌影片 · 544 KB</div></div>
   </div>
 </div>
 
 <section class="sec">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="kicker">01 · What we build</div>
+      <div class="kicker">01 · Two modes</div>
+      <h2>办公与编程,<br>是两种工作方式。</h2>
+      <p>不是同一个助手换两行提示词。人格、规则、引导、可用动作都不同——因为写文档和改代码,本来就是两件事。</p>
+    </div>
+    <div class="grid c2">
+      <div class="card mode-card reveal">
+        <div class="mc-head"><span class="am-chip office"><span class="am-mdot"></span>办公模式</span></div>
+        <h3>今天处理什么？</h3>
+        <p>写作、资料整理、检索调研、PPT 与表格、文件归类。产出默认面向「能直接交给别人看」的标准：结构清晰、格式规整、可直接落盘。终端与代码修改只在明确要求时做。</p>
+        <div class="mc-chips"><span>写周报</span><span>总结文档</span><span>生成 PPT</span><span>整理文件夹</span><span>润色邮件</span><span>深度调研</span></div>
+      </div>
+      <div class="card mode-card reveal">
+        <div class="mc-head"><span class="am-chip coding"><span class="am-mdot"></span>编程模式</span></div>
+        <h3>仓库里要动什么？</h3>
+        <p>住在代码仓库里的工程 Agent：先读后改是铁律，能用 edit_file 落地的绝不只给建议，改完能跑就跑、跑不过继续修到通过。报错排查走「读完整栈 → 定位根因 → 最小修复 → 验证」。</p>
+        <div class="mc-chips"><span>解释代码</span><span>修 bug</span><span>写测试</span><span>代码审查</span><span>重构</span><span>Python 脚本</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">02 · What we build</div>
       <h2>三件事,做到底</h2>
-      <p>实验室的全部产出围绕一条主线:让 AI 拥有真实世界的执行能力,同时不牺牲本地的安全与隐私。</p>
+      <p>实验室的全部产出围绕一条主线：让 AI 拥有真实世界的执行能力，同时不牺牲本地的安全与隐私。</p>
     </div>
     <div class="grid c3">
       <div class="card reveal">
         <span class="tag">Product</span>
         <h3>巨天agent</h3>
-        <p>桌面 AI 工作台。39 个内置工具直连真实终端与文件系统,AI 角色(记忆·朗读·画画),深度调研带引用报告,目标模式自动续跑,并行子代理,技能市场,免费模型零门槛。MIT 开源。</p>
-        <div class="meta"><span>v11.0.2</span><span>MIT</span><span>macOS · Windows</span></div>
+        <p>桌面 AI 工作台。39 个内置工具直连真实终端与文件系统，AI 角色（记忆 · 朗读 · 画画），深度调研带引用报告，目标模式自动续跑，并行子代理，技能市场，免费模型零门槛。</p>
+        <div class="meta"><span>MIT</span><span>macOS</span><span>Windows</span></div>
         <a class="go" href="projects.html">项目详情 →</a>
       </div>
       <div class="card reveal">
         <span class="tag">Research</span>
         <h3>安全与系统研究</h3>
-        <p>五篇工程论文:同宿主零信任网关、转义优先渲染管道、取消安全的子代理调度、单目录数据架构、音乐网格上的程序化影片。每篇附实测数据与局限说明。</p>
+        <p>五篇工程论文：同宿主零信任网关、转义优先渲染管道、取消安全的子代理调度、单目录数据架构、音乐网格上的程序化影片。每篇附实测数据与局限说明。</p>
         <div class="meta"><span>5 papers</span><span>all measured</span></div>
         <a class="go" href="research.html">进入研究 →</a>
       </div>
       <div class="card reveal">
         <span class="tag">Craft</span>
         <h3>程序化媒体</h3>
-        <p>品牌影片不用剪辑软件——它由代码渲染:128 BPM 音乐网格、8 个场景、系统级中文字体、超采样与硬编码回退。交付 1920×1080、544 KB。</p>
+        <p>品牌影片不用剪辑软件——它由代码渲染：128 BPM 音乐网格、8 个场景、系统级中文字体、超采样与硬编码回退。</p>
         <div class="meta"><span>1920×1080</span><span>23.03s</span><span>544 KB</span></div>
         <a class="go" href="research/p5-bpm-film-engine.html">读论文 →</a>
       </div>
@@ -78,30 +141,49 @@
 <section class="sec" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="kicker">02 · Featured research</div>
-      <h2>研究精选</h2>
+      <div class="kicker">03 · Principles</div>
+      <h2>我们的四条底线</h2>
     </div>
     <div class="grid c2">
-      <a class="card rcard reveal" href="research/p1-zero-trust-gateway.html">
-        <span class="no">PAPER · 01</span>
-        <h3>本地智能体的同宿主零信任网关</h3>
-        <p>CORS 从一开始就不该存在。同宿主 Origin 判定 + DNS-rebinding 421 + 密钥掩码与回写保护,六类攻击实测全部拦截。</p>
-        <span class="go">阅读 →</span>
-      </a>
-      <a class="card rcard reveal" href="research/p4-single-dir-data.html">
-        <span class="no">PAPER · 04</span>
-        <h3>单目录本地数据架构与无损迁移</h3>
-        <p>两个历史数据目录合并为一,33 项一次搬空、12 项冲突副本零丢失、配对码跨版本不变。迁移算法与实测记录。</p>
-        <span class="go">阅读 →</span>
-      </a>
+      <div class="card princ reveal">
+        <h3><span class="pn">01</span>数据归你</h3>
+        <p>设置、会话、密钥、记忆全部存在本机 <code>~/.lyclaw/</code>。应用不内置任何模型服务与遥测，卸载前删除该目录即彻底清除。</p>
+      </div>
+      <div class="card princ reveal">
+        <h3><span class="pn">02</span>危险动作要点头</h3>
+        <p>删除、覆盖、越界路径、破坏性命令——默认拦下并说明风险。工具能做的事越多，边界就越要硬。</p>
+      </div>
+      <div class="card princ reveal">
+        <h3><span class="pn">03</span>数字可复现</h3>
+        <p>公开的每个数字都来自仓库实测命令、构建日志或 CI 记录，论文页脚附「数据来源」。我们不发布无法复现的数字。</p>
+      </div>
+      <div class="card princ reveal">
+        <h3><span class="pn">04</span>开源可审计</h3>
+        <p>MIT 协议，代码全量公开。安全策略、支持版本与漏洞报告通道写在 SECURITY.md。</p>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="sec" style="padding-top:0">
   <div class="wrap">
-    <div class="callout reveal">
-      <b>数据说明</b> — 本站展示的每一个数字均可溯源:仓库实测命令与输出、构建日志、CI 运行记录、npm audit 报告。各论文页脚附「数据来源」小节。我们不发布无法复现的数字。
+    <div class="sec-head reveal">
+      <div class="kicker">04 · Featured research</div>
+      <h2>研究精选</h2>
+    </div>
+    <div class="grid c2">
+      <a class="card rcard reveal" href="research/p1-zero-trust-gateway.html">
+        <span class="no">PAPER · 01</span>
+        <h3>本地智能体的同宿主零信任网关</h3>
+        <p>CORS 从一开始就不该存在。同宿主 Origin 判定 + DNS-rebinding 421 + 密钥掩码与回写保护，六类攻击实测全部拦截。</p>
+        <span class="go">阅读 →</span>
+      </a>
+      <a class="card rcard reveal" href="research/p4-single-dir-data.html">
+        <span class="no">PAPER · 04</span>
+        <h3>单目录本地数据架构与无损迁移</h3>
+        <p>两个历史数据目录合并为一，33 项一次搬空、12 项冲突副本零丢失、配对码跨版本不变。迁移算法与实测记录。</p>
+        <span class="go">阅读 →</span>
+      </a>
     </div>
   </div>
 </section>

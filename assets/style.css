@@ -221,6 +221,98 @@ a { color: var(--ink); text-decoration: none; }
 }
 .callout b { color: var(--green-deep); }
 
+/* ── 产品窗口（hero 下方）:按应用真实布局绘制 ── */
+.app-mock {
+  margin-top: 76px; border-radius: var(--r-panel); overflow: hidden;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: var(--glass-hi), 0 34px 70px -34px rgba(33, 53, 82, 0.42);
+  backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3);
+}
+.am-bar {
+  height: 38px; display: flex; align-items: center; gap: 12px; padding: 0 16px;
+  border-bottom: 1px solid rgba(219, 228, 225, 0.7); background: rgba(249, 250, 251, 0.7);
+}
+.am-lights { display: flex; gap: 6px; }
+.am-lights i { width: 11px; height: 11px; border-radius: 50%; background: #e3e6e5; }
+.am-lights i:nth-child(1) { background: #ff5f57; }
+.am-lights i:nth-child(2) { background: #febc2e; }
+.am-lights i:nth-child(3) { background: #28c840; }
+.am-title { font-size: 12px; color: var(--ink-3); font-weight: 550; }
+.am-body { display: grid; grid-template-columns: 218px 1fr; min-height: 396px; }
+
+.am-side {
+  border-right: 1px solid rgba(219, 228, 225, 0.7);
+  background: rgba(249, 250, 251, 0.6); padding: 16px 12px; display: flex; flex-direction: column; gap: 14px;
+}
+.am-brand { font-size: 13px; font-weight: 650; display: flex; align-items: center; gap: 8px; padding: 0 6px; }
+.am-dot { width: 9px; height: 9px; border-radius: 3px; background: linear-gradient(145deg, #5fd0a2, var(--green)); box-shadow: 0 2px 6px rgba(16,163,127,.4); }
+.am-nav { display: flex; flex-direction: column; gap: 2px; }
+.am-nav span { font-size: 12.5px; color: var(--ink-2); padding: 7px 9px; border-radius: 9px; }
+.am-nav span.on { background: rgba(36, 57, 54, 0.07); color: var(--ink); font-weight: 600; }
+.am-side-foot { margin-top: auto; font-size: 10.5px; color: var(--ink-3); padding: 0 6px; }
+
+.am-main { display: flex; flex-direction: column; min-width: 0; }
+.am-tabs {
+  height: 40px; display: flex; align-items: center; gap: 4px; padding: 0 14px;
+  border-bottom: 1px solid rgba(219, 228, 225, 0.7); font-size: 12px; color: var(--ink-3);
+}
+.am-tabs span { padding: 5px 11px; border-radius: 8px; }
+.am-tabs span.on { background: rgba(36, 57, 54, 0.07); color: var(--ink); font-weight: 600; }
+.am-tabs .plus { margin-left: 2px; opacity: 0.6; }
+.am-chat { flex: 1; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.am-msg { font-size: 13px; line-height: 1.75; max-width: 84%; }
+.am-msg.user {
+  align-self: flex-end; background: rgba(244, 244, 245, 0.9); color: var(--ink);
+  padding: 9px 14px; border-radius: 14px 14px 4px 14px;
+}
+.am-msg.ai { color: var(--ink); }
+.am-msg.ai b { font-weight: 650; }
+.am-msg code { font-family: var(--mono); font-size: 12px; background: rgba(39, 79, 71, 0.08); padding: 1px 6px; border-radius: 5px; color: var(--green-ink); }
+.am-tool { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-2); }
+.am-tchip {
+  font-family: var(--mono); font-size: 10.5px; color: var(--green-ink);
+  background: rgba(82, 187, 131, 0.13); border: 1px solid rgba(47, 158, 110, 0.28);
+  padding: 2px 8px; border-radius: 6px;
+}
+.am-ok { color: var(--green-2); font-weight: 700; }
+.am-composer { padding: 0 20px 16px; }
+.am-status { display: flex; align-items: center; gap: 10px; font-size: 10.5px; color: var(--ink-3); padding-bottom: 7px; font-family: var(--mono); }
+.am-input {
+  border: 1px solid rgba(36, 57, 54, 0.12); border-radius: 16px;
+  padding: 13px 16px; font-size: 13px; color: var(--ink-3);
+  background: rgba(255, 255, 255, 0.72); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  display: flex; align-items: center;
+}
+.am-caret { width: 1.5px; height: 15px; background: var(--green); margin-left: 3px; animation: blink 1.15s step-end infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* 模式徽章（产品窗口与模式卡片共用；色与应用内一致：办公绿 / 编程蓝） */
+.am-mode, .am-chip {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600;
+  padding: 4px 10px; border-radius: 999px; width: fit-content;
+}
+.am-mdot { width: 6px; height: 6px; border-radius: 50%; }
+.am-chip.office, .am-mode.office { background: rgba(16, 163, 127, 0.1); border: 1px solid rgba(16, 163, 127, 0.32); color: #0d8f6f; }
+.am-chip.office .am-mdot, .am-mode.office .am-mdot { background: #10a37f; }
+.am-chip.coding, .am-mode.coding { background: rgba(37, 99, 235, 0.09); border: 1px solid rgba(37, 99, 235, 0.32); color: #2563eb; }
+.am-chip.coding .am-mdot, .am-mode.coding .am-mdot { background: #2563eb; }
+
+/* ── 双模式对比卡 ── */
+.mode-card .mc-head { margin-bottom: 16px; }
+.mode-card h3 { font-size: 19px; margin-bottom: 10px; }
+.mc-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+.mc-chips span {
+  font-size: 12px; color: var(--ink-2); background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(36, 57, 54, 0.1); padding: 5px 12px; border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+/* ── 原则卡 ── */
+.card.princ h3 { display: flex; align-items: baseline; gap: 12px; font-size: 18px; }
+.card.princ .pn { font-family: var(--mono); font-size: 13px; color: var(--green-2); font-weight: 650; }
+.card.princ code { font-family: var(--mono); font-size: 13px; background: rgba(39, 79, 71, 0.08); padding: 1px 6px; border-radius: 5px; color: var(--green-ink); }
+
 /* ── 论文页 ───────────────────────────────────── */
 .paper-hero {
   padding: 120px 0 70px; position: relative; overflow: hidden;
@@ -342,4 +434,8 @@ footer .fine { color: var(--ink-3); font-size: 12.5px; max-width: 420px; line-he
   .hero::after { width: 120px; height: 120px; border-radius: 40px; right: 5%; opacity: 0.85; }
   .hero::before { display: none; }
   .sec { padding: 80px 0; }
+  /* 产品窗口：窄屏收起侧栏，只留主区，避免压缩成不可读的窄条 */
+  .app-mock { margin-top: 52px; }
+  .am-body { grid-template-columns: 1fr; min-height: 340px; }
+  .am-side { display: none; }
 }
